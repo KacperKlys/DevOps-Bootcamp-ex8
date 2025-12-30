@@ -10,10 +10,10 @@ pipeline {
                     echo 'incrementing app version...'
                     dir("app") {
 			 sh 'npm version minor --no-git-tag-version'
+                    	def packageJSON = readJSON file: 'package.json'
+                    	def packageJSONVersion = packageJSON.version
+                    	env.IMAGE_NAME = "$packageJSONVersion-$BUILD_NUMBER"
                     }
-                    def packageJSON = readJSON file: 'package.json'
-                    def packageJSONVersion = packageJSON.version
-                    env.IMAGE_NAME = "$packageJSONVersion-$BUILD_NUMBER"
                 }
             }
         }
