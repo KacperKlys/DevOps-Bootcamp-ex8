@@ -32,21 +32,17 @@ pipeline {
             steps {
                 script {
                     buildImage "marlenadocker/my-nodejs-app:${IMAGE_NAME}"
+                    dockerLogin()
+                    dockerPush "marlenadocker/my-nodejs-app:${IMAGE_NAME}"
                 }
             }
         }
         stage('Commit version update'){
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'githubtkn', passwordVariable: 'PASS', usernameVariable: 'USER')]){
-                        sh 'git config --global user.email "jenkins@example.com"'
-                        sh 'git config --global user.name "jenkins"'
-
-                        sh "git remote set-url origin https://${USER}:${PASS}@github.com/KacperKlys/DevOps-Bootcamp-ex8.git"
-                        sh 'git add app/package.json'
-                        sh 'git commit -m "ci: version bump"'
-                        sh 'git push origin HEAD:main'
-                    }
+                    gitAddRemote "@github.com/KacperKlys/DevOps-Bootcamp-ex8.git"
+                    gitConfigUser "jenkins"
+                    gitPush($BRANCH_NAME, "ci: version bump")
                 }
             }
         }
