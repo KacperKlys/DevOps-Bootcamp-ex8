@@ -41,7 +41,7 @@ pipeline {
             steps {
                 script {
                     gitAddRemote "@github.com/KacperKlys/DevOps-Bootcamp-ex8.git"
-                    gitConfigUser "jenkins"
+                    gitUserConfig "jenkins"
                     gitPush($BRANCH_NAME, "ci: version bump")
                 }
             }
