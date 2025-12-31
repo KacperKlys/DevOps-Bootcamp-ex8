@@ -1,4 +1,4 @@
-#!/user/bin/env groovy
+#!/usr/bin/env groovy
 
 @Library('Jenkins-shared-library')
 
