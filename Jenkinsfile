@@ -42,7 +42,7 @@ pipeline {
                 script {
                     gitAddRemote "@github.com/KacperKlys/DevOps-Bootcamp-ex8.git"
                     gitUserConfig "jenkins"
-                    gitPush($BRANCH_NAME, "ci: version bump")
+                    gitPush(env.BRANCH_NAME, "ci: version bump")
                 }
             }
         }
