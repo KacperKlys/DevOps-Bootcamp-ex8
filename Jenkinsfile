@@ -1,3 +1,7 @@
+#!/user/bin/env groovy
+
+@Library('Jenkins-shared-library')
+
 pipeline {
     agent any
     tools {
@@ -20,23 +24,14 @@ pipeline {
         stage('Test App') {
             steps {
                 script {
-                    echo 'testing the application...'
-                    dir("app") {
-                        sh 'npm install'
-                        sh 'npm run test'
-                    }
+                    nodeTest()
                 }
             }
         }
         stage('Build Docker Image') {
             steps {
                 script {
-                    echo 'building the application image...'
-                    withCredentials([usernamePassword(credentialsId: 'docker-hub-repo', passwordVariable: 'PASS', usernameVariable: 'USER')]){
-                        sh "docker build -t marlenadocker/my-nodejs-app:${IMAGE_NAME} ."
-                        sh 'echo $PASS | docker login -u $USER --password-stdin'
-                        sh "docker push marlenadocker/my-nodejs-app:${IMAGE_NAME}"
-                    }
+                    buildImage "marlenadocker/my-nodejs-app:${IMAGE_NAME}"
                 }
             }
         }
